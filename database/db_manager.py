@@ -44,7 +44,7 @@ class DBManager:
     @staticmethod
     def execute_query(connection, query):
         """Method for creating tables, inserting, updating and deleting"""
-        connection.autocommit = True
+        # connection.autocommit = True
         cursor = connection.cursor()
         try:
             cursor.execute(query)
@@ -54,10 +54,3 @@ class DBManager:
 
 
 dbman = DBManager(DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT)
-conn = dbman.create_connection()
-print(type(conn))
-
-q = "SELECT * FROM person"
-info = dbman.execute_read_query(conn, q)
-
-print(info)
