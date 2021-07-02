@@ -1,6 +1,6 @@
 import logging
 
-from config import TOKEN
+from configuration.config import TOKEN
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor

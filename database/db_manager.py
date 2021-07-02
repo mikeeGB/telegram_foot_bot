@@ -1,5 +1,5 @@
 import psycopg2
-from config import DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT
+from configuration.config import DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT
 
 
 class DBManager:
