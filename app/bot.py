@@ -7,7 +7,7 @@ from aiogram.utils import executor
 import menu_buttons as mb
 from configuration.config import TOKEN
 from database.db_manager import dbman
-from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS
+from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db
 
 
 logging.basicConfig(level=logging.INFO)
@@ -16,23 +16,12 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
 
-def read_tg_id_from_person():
-    data_id = dbman.execute_read_query(conn, SELECT_TG_ID_FROM_PERSONS)
-    res = list(map(lambda x: x[0], data_id))
-    print(res)
-    return res
-
-
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
-
-    if message.from_user.id not in read_tg_id_from_person():  # checking for id's in table person
+    if message.from_user.id not in read_tg_id_from_person(conn):  # checking for id's in table person
         # adding new player if he clicked /start
-        add_player_query = ADDING_PLAYER_Q.format(tg_id=message.from_user.id,
-                                                  tg_name=f"'{message.from_user.username}'")
+        write_tg_id_to_db(conn, message.from_user.id, message.from_user.username)
 
-        dbman.execute_query(conn, add_player_query)
-        conn.commit()  # commit changes
     await bot.send_message(message.from_user.id, f"Привет, {message.from_user.username}!",
                            reply_markup=mb.main_menu)
 
