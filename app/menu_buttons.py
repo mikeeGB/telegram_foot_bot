@@ -21,8 +21,32 @@ sub_menu_goals = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_1_goal, btn_2
                                                                btn_3_goal, btn_4_goal,
                                                                btn_5_goal)
 
-# sub menu asking
-btn_finish_writing = KeyboardButton('Завершить матч')
-btn_continue_writing = KeyboardButton('Записать еще голы')
+# sub menu asking goals
+btn_finish_writing_g = KeyboardButton('Завершить матч')
+btn_continue_writing_goals_1 = KeyboardButton('Записать еще голы')
+btn_continue_writing_assists_1 = KeyboardButton('Записать ассисты')
 
-sub_menu_goals_writing = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_finish_writing, btn_continue_writing)
+sub_menu_goals_writing = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_continue_writing_goals_1,
+                                                                       btn_continue_writing_assists_1,
+                                                                       btn_finish_writing_g)
+
+
+# Sub Menu Assists
+btn_1_assist = KeyboardButton('1 Assist: 🎯')
+btn_2_assist = KeyboardButton('2 Assists: 🎯🎯')
+btn_3_assist = KeyboardButton('3 Assists: 🎯🎯🎯')
+btn_4_assist = KeyboardButton('4 Assists: 🎯🎯🎯🎯')
+btn_5_assist = KeyboardButton('5 Assists: 🎯🎯🎯🎯🎯')
+
+sub_menu_assists = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_1_assist, btn_2_assist,
+                                                                 btn_3_assist, btn_4_assist,
+                                                                 btn_5_assist)
+
+# sub menu asking assists
+btn_finish_writing_assists = KeyboardButton('Завершить матч')
+btn_continue_writing_assists_2 = KeyboardButton('Записать еще ассисты')
+btn_continue_writing_goals_2 = KeyboardButton('Записать голы')
+
+sub_menu_assists_writing = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_continue_writing_assists_2,
+                                                                         btn_continue_writing_goals_2,
+                                                                         btn_finish_writing_assists)
