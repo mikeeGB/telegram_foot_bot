@@ -7,7 +7,7 @@ from aiogram.utils import executor
 import menu_buttons as mb
 from configuration.config import TOKEN
 from database.db_manager import dbman
-from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db, write_goals_to_db
+from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db, write_goals_to_db, write_assists_to_db
 
 
 logging.basicConfig(level=logging.INFO)
@@ -71,6 +71,56 @@ async def echo_message(message: types.Message):
 
     elif message.text == 'Записать еще голы':
         await bot.send_message(message.from_user.id, "Записываю еще голы", reply_markup=mb.sub_menu_goals)
+
+
+
+
+
+    elif message.text == '🅰️ Записать ассисты':
+        await bot.send_message(message.from_user.id, "Записываю ассисты", reply_markup=mb.sub_menu_assists)
+
+    elif message.text == '1 Assist: 🎯':
+        write_assists_to_db(conn=conn, assists_num=1,
+                            tg_id=message.from_user.id,
+                            tg_name=message.from_user.username)
+        await bot.send_message(message.from_user.id, "1x🎯", reply_markup=mb.sub_menu_assists_writing)
+
+    elif message.text == '2 Assists: 🎯🎯':
+        write_assists_to_db(conn=conn, assists_num=2,
+                            tg_id=message.from_user.id,
+                            tg_name=message.from_user.username)
+        await bot.send_message(message.from_user.id, "2x🎯", reply_markup=mb.sub_menu_assists_writing)
+
+    elif message.text == '3 Assists: 🎯🎯🎯':
+        write_assists_to_db(conn=conn, assists_num=3,
+                            tg_id=message.from_user.id,
+                            tg_name=message.from_user.username)
+        await bot.send_message(message.from_user.id, "3x🎯", reply_markup=mb.sub_menu_assists_writing)
+
+    elif message.text == '4 Assists: 🎯🎯🎯🎯':
+        write_assists_to_db(conn=conn, assists_num=4,
+                            tg_id=message.from_user.id,
+                            tg_name=message.from_user.username)
+        await bot.send_message(message.from_user.id, "4x🎯", reply_markup=mb.sub_menu_assists_writing)
+
+    elif message.text == '5 Assists: 🎯🎯🎯🎯🎯':
+        write_assists_to_db(conn=conn, assists_num=5,
+                            tg_id=message.from_user.id,
+                            tg_name=message.from_user.username)
+        await bot.send_message(message.from_user.id, "5x🎯", reply_markup=mb.sub_menu_assists_writing)
+
+    elif message.text == 'Записать голы':
+        await bot.send_message(message.from_user.id, "Записываю голы", reply_markup=mb.sub_menu_goals)
+
+    elif message.text == 'Записать еще ассисты':
+        await bot.send_message(message.from_user.id, "Записываю еще ассисты", reply_markup=mb.sub_menu_assists)
+
+    elif message.text == 'Записать ассисты':
+        await bot.send_message(message.from_user.id, "Записываю ассисты", reply_markup=mb.sub_menu_assists)
+
+
+
+
 
 
 if __name__ == '__main__':
