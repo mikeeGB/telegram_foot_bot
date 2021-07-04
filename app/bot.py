@@ -7,7 +7,7 @@ from aiogram.utils import executor
 import menu_buttons as mb
 from configuration.config import TOKEN
 from database.db_manager import dbman
-from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db
+from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db, write_goals_to_db
 
 
 logging.basicConfig(level=logging.INFO)
@@ -37,18 +37,33 @@ async def echo_message(message: types.Message):
         await bot.send_message(message.from_user.id, '⚽ Записываю',
                                reply_markup=mb.sub_menu_goals)
     elif message.text == '1 Goal: ⚽':
+        write_goals_to_db(conn=conn, goals_num=1,
+                          tg_id=message.from_user.id,
+                          tg_name=message.from_user.username)
         await bot.send_message(message.from_user.id, "1x⚽", reply_markup=mb.sub_menu_goals_writing)
 
     elif message.text == '2 Goals: ⚽⚽':
+        write_goals_to_db(conn=conn, goals_num=2,
+                          tg_id=message.from_user.id,
+                          tg_name=message.from_user.username)
         await bot.send_message(message.from_user.id, "2x⚽", reply_markup=mb.sub_menu_goals_writing)
 
     elif message.text == '3 Goals: ⚽⚽⚽':
+        write_goals_to_db(conn=conn, goals_num=3,
+                          tg_id=message.from_user.id,
+                          tg_name=message.from_user.username)
         await bot.send_message(message.from_user.id, "3x⚽", reply_markup=mb.sub_menu_goals_writing)
 
     elif message.text == '4 Goals: ⚽⚽⚽⚽':
+        write_goals_to_db(conn=conn, goals_num=4,
+                          tg_id=message.from_user.id,
+                          tg_name=message.from_user.username)
         await bot.send_message(message.from_user.id, "4x⚽", reply_markup=mb.sub_menu_goals_writing)
 
     elif message.text == '5 Goals: ⚽⚽⚽⚽⚽':
+        write_goals_to_db(conn=conn, goals_num=5,
+                          tg_id=message.from_user.id,
+                          tg_name=message.from_user.username)
         await bot.send_message(message.from_user.id, "5x⚽", reply_markup=mb.sub_menu_goals_writing)
 
     elif message.text == 'Завершить матч':
