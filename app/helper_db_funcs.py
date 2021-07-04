@@ -1,7 +1,7 @@
 import datetime
 from database.db_manager import dbman
 from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS, ADD_GOALS, UPDATE_GOALS, \
-                              SELECT_DATE_FROM_STATS
+                              SELECT_DATE_FROM_STATS, ADD_ASSISTS, UPDATE_ASSISTS
 
 
 def read_tg_id_from_person(conn):
@@ -41,3 +41,21 @@ def check_date_from_stats(conn, tg_id):
     date_from_stats = dbman.execute_read_query(conn, select_date_query)
     res = list(map(lambda x: x[0], date_from_stats))
     return datetime.date.today() in res
+
+
+def write_assists_to_db(conn, assists_num, tg_id, tg_name):
+    if check_date_from_stats(conn, tg_id):  # if current date is in db, use UPDATE
+        update_assists_in_db(conn, assists_num, tg_id)
+    else:
+        add_assists_query = ADD_ASSISTS.format(cur_tg_id=tg_id,
+                                               assists_num=assists_num,
+                                               cur_tg_name=f"'{tg_name}'")
+        dbman.execute_query(conn, add_assists_query)
+        conn.commit()
+
+
+def update_assists_in_db(conn, assists_num, tg_id):
+    update_assists_query = UPDATE_ASSISTS.format(assists_num=assists_num,
+                                                 cur_tg_id=tg_id)
+    dbman.execute_query(conn, update_assists_query)
+    conn.commit()
