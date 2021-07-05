@@ -7,7 +7,7 @@ ADD_GOALS = """INSERT INTO
 
 UPDATE_GOALS = """UPDATE stats
                   SET goals = goals + {goals_num}
-                  WHERE tg_id = {cur_tg_id}"""
+                  WHERE tg_id = {cur_tg_id} AND cur_date = CURRENT_DATE"""
 
 SELECT_DATE_FROM_STATS = "SELECT cur_date FROM stats WHERE tg_id = {cur_tg_id}"
 
@@ -18,4 +18,4 @@ ADD_ASSISTS = """INSERT INTO
 
 UPDATE_ASSISTS = """UPDATE stats
                   SET assists = assists + {assists_num}
-                  WHERE tg_id = {cur_tg_id}"""
+                  WHERE tg_id = {cur_tg_id} AND cur_date = CURRENT_DATE"""
