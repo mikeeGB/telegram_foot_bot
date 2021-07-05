@@ -1,7 +1,9 @@
 import datetime
 from database.db_manager import dbman
 from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS, ADD_GOALS, UPDATE_GOALS, \
-                              SELECT_DATE_FROM_STATS, ADD_ASSISTS, UPDATE_ASSISTS
+                              SELECT_DATE_FROM_STATS, ADD_ASSISTS, UPDATE_ASSISTS,\
+                              INITIALIZE_TEAM_STATS_WITH_ZERO, UPDATE_CUR_DATE_TEAM_STATS,\
+                              SELECT_DATE_FROM_TEAM_STATS, CHECK_TEAM_STATS_TABLE_EMPTINESS
 
 
 def read_tg_id_from_person(conn):
@@ -59,3 +61,26 @@ def update_assists_in_db(conn, assists_num, tg_id):
                                                  cur_tg_id=tg_id)
     dbman.execute_query(conn, update_assists_query)
     conn.commit()
+
+
+def initialize_team_stats_with_zero(conn):
+    dbman.execute_query(conn, INITIALIZE_TEAM_STATS_WITH_ZERO)
+    conn.commit()
+
+
+def check_date_from_team_stats(conn):
+    date_from_team_stats = dbman.execute_read_query(conn, SELECT_DATE_FROM_TEAM_STATS)
+    return datetime.date.today() in date_from_team_stats[-1]  # compares current date and last date in table
+
+
+def update_team_stats(conn):
+    if check_date_from_team_stats(conn):  # if current date is in table
+        dbman.execute_query(conn, UPDATE_CUR_DATE_TEAM_STATS)  # update team stats
+        conn.commit()
+    else:
+        initialize_team_stats_with_zero(conn)  # else - insert new row with zeros
+
+
+def emptiness_checker(conn):
+    x = dbman.execute_read_query(conn, CHECK_TEAM_STATS_TABLE_EMPTINESS)
+    return x[0][0]
