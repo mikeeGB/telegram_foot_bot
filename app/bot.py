@@ -7,7 +7,11 @@ from aiogram.utils import executor
 import menu_buttons as mb
 from configuration.config import TOKEN
 from database.db_manager import dbman
-from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db, write_goals_to_db, write_assists_to_db
+from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db,\
+                            write_goals_to_db, write_assists_to_db, check_date_from_team_stats,\
+                            update_team_stats,\
+                            emptiness_checker,\
+                            initialize_team_stats_with_zero
 
 
 logging.basicConfig(level=logging.INFO)
@@ -22,6 +26,8 @@ async def process_start_command(message: types.Message):
         # adding new player if he clicked /start
         write_tg_id_to_db(conn, message.from_user.id, message.from_user.username)
 
+    if not emptiness_checker(conn):  # fill table team_stats with zeros if table is empty
+        initialize_team_stats_with_zero(conn)
     await bot.send_message(message.from_user.id, f"Привет, {message.from_user.username}!",
                            reply_markup=mb.main_menu)
 
@@ -67,6 +73,7 @@ async def echo_message(message: types.Message):
         await bot.send_message(message.from_user.id, "5x⚽", reply_markup=mb.sub_menu_goals_writing)
 
     elif message.text == 'Завершить матч':
+        update_team_stats(conn=conn)
         await bot.send_message(message.from_user.id, "Матч завершен", reply_markup=mb.main_menu)
 
     elif message.text == 'Записать еще голы':
