@@ -38,3 +38,10 @@ UPDATE_CUR_DATE_TEAM_STATS = """UPDATE team_stats
 SELECT_DATE_FROM_TEAM_STATS = """SELECT cur_date FROM team_stats"""
 
 CHECK_TEAM_STATS_TABLE_EMPTINESS = """SELECT(EXISTS(SELECT * FROM team_stats))"""
+
+INSERT_INTO_MATCH_RESULTS_TABLE = """INSERT INTO match_results(tg_id, winnings, defeats, draws)
+                                            VALUES({tg_user_id}, {winnings_num}, {defeats_num}, {draws_num});"""
+
+UPDATE_GAMES_PLAYED_IN_STATS_TABLE = """UPDATE stats
+                                        SET games_played = games_played + 1
+                                        WHERE tg_id = {tg_user_id} AND cur_date = CURRENT_DATE;"""
