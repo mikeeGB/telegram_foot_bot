@@ -28,6 +28,9 @@ async def process_start_command(message: types.Message):
 
     if not emptiness_checker(conn):  # fill table team_stats with zeros if table is empty
         initialize_team_stats_with_zero(conn)
+    if not check_date_from_team_stats(conn):  # fill table team_stats with zeros if current date is not in table
+        initialize_team_stats_with_zero(conn)
+
     await bot.send_message(message.from_user.id, f"Привет, {message.from_user.username}!",
                            reply_markup=mb.main_menu)
 
@@ -73,8 +76,10 @@ async def echo_message(message: types.Message):
         await bot.send_message(message.from_user.id, "5x⚽", reply_markup=mb.sub_menu_goals_writing)
 
     elif message.text == 'Завершить матч':
+        # ! create additional table match_results to write winnings, defeats, draws
         update_team_stats(conn=conn)
-        await bot.send_message(message.from_user.id, "Матч завершен", reply_markup=mb.main_menu)
+        await bot.send_message(message.from_user.id, "Как закончился матч?",
+                               reply_markup=mb.sub_menu_winning_defeat_draw)
 
     elif message.text == 'Записать еще голы':
         await bot.send_message(message.from_user.id, "Записываю еще голы", reply_markup=mb.sub_menu_goals)
@@ -124,6 +129,9 @@ async def echo_message(message: types.Message):
 
     elif message.text == 'Записать ассисты':
         await bot.send_message(message.from_user.id, "Записываю ассисты", reply_markup=mb.sub_menu_assists)
+
+    elif message.text == '↩️Вернуться в меню':
+        await bot.send_message(message.from_user.id, "Главное меню", reply_markup=mb.main_menu)
 
 
 
