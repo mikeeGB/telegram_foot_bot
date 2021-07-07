@@ -3,7 +3,9 @@ from database.db_manager import dbman
 from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS, ADD_GOALS, UPDATE_GOALS, \
                               SELECT_DATE_FROM_STATS, ADD_ASSISTS, UPDATE_ASSISTS,\
                               INITIALIZE_TEAM_STATS_WITH_ZERO, UPDATE_CUR_DATE_TEAM_STATS,\
-                              SELECT_DATE_FROM_TEAM_STATS, CHECK_TEAM_STATS_TABLE_EMPTINESS
+                              SELECT_DATE_FROM_TEAM_STATS, CHECK_TEAM_STATS_TABLE_EMPTINESS,\
+                              INSERT_INTO_MATCH_RESULTS_TABLE,\
+                              UPDATE_GAMES_PLAYED_IN_STATS_TABLE
 
 
 def read_tg_id_from_person(conn):
@@ -84,3 +86,18 @@ def update_team_stats(conn):
 def emptiness_checker(conn):
     x = dbman.execute_read_query(conn, CHECK_TEAM_STATS_TABLE_EMPTINESS)
     return x[0][0]
+
+
+def write_individual_stats_to_match_result_table(conn, tg_id, winnings_num, defeats_num, draws_num):
+    insert_into_match_res_query = INSERT_INTO_MATCH_RESULTS_TABLE.format(tg_user_id=tg_id,
+                                                                         winnings_num=winnings_num,
+                                                                         defeats_num=defeats_num,
+                                                                         draws_num=draws_num)
+    dbman.execute_query(conn, insert_into_match_res_query)
+    conn.commit()
+
+
+def update_stats_games_played(conn, tg_id):
+    update_games_played_query = UPDATE_GAMES_PLAYED_IN_STATS_TABLE.format(tg_user_id=tg_id)
+    dbman.execute_query(conn, update_games_played_query)
+    conn.commit()
