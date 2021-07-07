@@ -11,7 +11,9 @@ from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db,\
                             write_goals_to_db, write_assists_to_db, check_date_from_team_stats,\
                             update_team_stats,\
                             emptiness_checker,\
-                            initialize_team_stats_with_zero
+                            initialize_team_stats_with_zero,\
+                            write_individual_stats_to_match_result_table,\
+                            update_stats_games_played
 
 
 logging.basicConfig(level=logging.INFO)
@@ -77,16 +79,42 @@ async def echo_message(message: types.Message):
 
     elif message.text == 'Завершить матч':
         # ! create additional table match_results to write winnings, defeats, draws
-        update_team_stats(conn=conn)
+        update_stats_games_played(conn=conn, tg_id=message.from_user.id)
         await bot.send_message(message.from_user.id, "Как закончился матч?",
                                reply_markup=mb.sub_menu_winning_defeat_draw)
 
+    elif message.text == '👊 Победа':
+        write_individual_stats_to_match_result_table(conn=conn,
+                                                     tg_id=message.from_user.id,
+                                                     winnings_num=1,
+                                                     defeats_num=0,
+                                                     draws_num=0)
+        update_team_stats(conn=conn)
+        await bot.send_message(message.from_user.id, "Победа записана 🤩",
+                               reply_markup=mb.main_menu)
+
+    elif message.text == '🤬 Поражение':
+        write_individual_stats_to_match_result_table(conn=conn,
+                                                     tg_id=message.from_user.id,
+                                                     winnings_num=0,
+                                                     defeats_num=1,
+                                                     draws_num=0)
+        update_team_stats(conn=conn)
+        await bot.send_message(message.from_user.id, "Поражение записано 🥺",
+                               reply_markup=mb.main_menu)
+
+    elif message.text == '🤝 Ничья':
+        write_individual_stats_to_match_result_table(conn=conn,
+                                                     tg_id=message.from_user.id,
+                                                     winnings_num=0,
+                                                     defeats_num=0,
+                                                     draws_num=1)
+        update_team_stats(conn=conn)
+        await bot.send_message(message.from_user.id, "Ничья записана 😐",
+                               reply_markup=mb.main_menu)
+
     elif message.text == 'Записать еще голы':
         await bot.send_message(message.from_user.id, "Записываю еще голы", reply_markup=mb.sub_menu_goals)
-
-
-
-
 
     elif message.text == '🅰️ Записать ассисты':
         await bot.send_message(message.from_user.id, "Записываю ассисты", reply_markup=mb.sub_menu_assists)
@@ -133,10 +161,8 @@ async def echo_message(message: types.Message):
     elif message.text == '↩️Вернуться в меню':
         await bot.send_message(message.from_user.id, "Главное меню", reply_markup=mb.main_menu)
 
-
-
-
-
+    else:
+        await message.reply("Такой команды не существует. Нажмите /start для отображения меню")
 
 if __name__ == '__main__':
     conn = dbman.create_connection()
