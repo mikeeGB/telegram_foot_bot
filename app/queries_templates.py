@@ -30,9 +30,12 @@ UPDATE_CUR_DATE_TEAM_STATS = """UPDATE team_stats
                                                     WHERE tg_id = 452975280 AND cur_date = CURRENT_DATE),
                                     goals = (SELECT SUM(goals) FROM stats WHERE cur_date = CURRENT_DATE),
                                     assists = (SELECT SUM(assists) FROM stats WHERE cur_date = CURRENT_DATE),
-                                    winnings = 0,
-                                    defeats = 0,
-                                    draws = 0
+                                    winnings = (SELECT SUM(winnings) FROM match_results WHERE cur_date = CURRENT_DATE
+                                                                                        AND tg_id = 452975280),
+                                    defeats = (SELECT SUM(defeats) FROM match_results WHERE cur_date = CURRENT_DATE
+                                                                                        AND tg_id = 452975280),
+                                    draws = (SELECT SUM(draws) FROM match_results WHERE cur_date = CURRENT_DATE
+                                                                                        AND tg_id = 452975280)
                                 WHERE cur_date = CURRENT_DATE;"""
 
 SELECT_DATE_FROM_TEAM_STATS = """SELECT cur_date FROM team_stats"""
