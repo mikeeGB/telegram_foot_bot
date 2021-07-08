@@ -163,9 +163,8 @@ async def echo_message(message: types.Message):
         await bot.send_message(message.from_user.id, "Главное меню", reply_markup=mb.main_menu)
 
     elif message.text == '🔝 Показать статистику':
-        await bot.send_message(message.from_user.id,
-                               f"Ваша статистика за сегодня:\n"
-                               f"{show_day_individual_stats(conn=conn, tg_id=message.from_user.id)}")
+        text = f"Ваша статистика за сегодня:\n{show_day_individual_stats(conn=conn, tg_id=message.from_user.id)}"
+        await message.reply(text)
 
     else:
         await message.reply("Такой команды не существует. Нажмите /start для отображения меню")
