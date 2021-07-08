@@ -1,4 +1,7 @@
 import datetime
+
+from aiogram.utils.markdown import bold, text, escape_md
+
 from database.db_manager import dbman
 from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS, ADD_GOALS, UPDATE_GOALS, \
                               SELECT_DATE_FROM_STATS, ADD_ASSISTS, UPDATE_ASSISTS,\
@@ -116,10 +119,15 @@ def select_day_individual_stats(conn, tg_id):
 def show_day_individual_stats(conn, tg_id):
     data = select_day_individual_stats(conn, tg_id)
     if type(data) is tuple:
-        text = f"Дата: {data[-1]}\nИгрок: {data[0]}\nГолы: {data[1]}\nАссисты: {data[2]}\nИгр сыграно: {data[3]}"
+        message_text = text(bold("Дата:"), f"{data[-1]}",
+                            bold("Игрок:"), escape_md(f"{str(data[0])}"),
+                            bold("Голы:"), f"{str(data[1])}",
+                            bold("Ассисты:"), f"{str(data[2])}",
+                            bold("Игр сыграно:"), f"{str(data[3])}", sep='\n')
+
     else:
-        text = data
-    return text
+        message_text = data
+    return message_text
 
 
 def select_all_time_individual_stats(conn, tg_id):
@@ -134,8 +142,8 @@ def select_all_time_individual_stats(conn, tg_id):
 def show_all_time_individual_stats(conn, tg_id):
     data = select_all_time_individual_stats(conn, tg_id)
     if type(data) is tuple:
-        text = f"Период: {data[1]} --> {data[2]}\nИгровых дней: {data[3]}\n" \
-               f"Игрок {data[0]}\nГолы: {data[4]}\nАссисты: {data[5]}\nИгр сыграно: {data[6]}"
+        text = f"Период: {data[1]} --> {data[2]}\nИгровых дней с результативными действиями: {data[3]}\n" \
+               f"Игрок: {data[0]}\nГолы: {data[4]}\nАссисты: {data[5]}\nИгр сыграно: {data[6]}"
     else:
         text = data
     return text
