@@ -48,3 +48,7 @@ INSERT_INTO_MATCH_RESULTS_TABLE = """INSERT INTO match_results(tg_id, winnings, 
 UPDATE_GAMES_PLAYED_IN_STATS_TABLE = """UPDATE stats
                                         SET games_played = games_played + 1
                                         WHERE tg_id = {tg_user_id} AND cur_date = CURRENT_DATE;"""
+
+SELECT_DAY_STATS_INDIVIDUAL = """SELECT tg_name, goals, assists, games_played, cur_date
+                                    FROM stats
+                                 WHERE cur_date = CURRENT_DATE AND tg_id = {tg_user_id}"""
