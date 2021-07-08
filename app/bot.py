@@ -13,7 +13,8 @@ from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db,\
                             emptiness_checker,\
                             initialize_team_stats_with_zero,\
                             write_individual_stats_to_match_result_table,\
-                            update_stats_games_played
+                            update_stats_games_played,\
+                            show_day_individual_stats
 
 
 logging.basicConfig(level=logging.INFO)
@@ -160,6 +161,11 @@ async def echo_message(message: types.Message):
 
     elif message.text == '↩️Вернуться в меню':
         await bot.send_message(message.from_user.id, "Главное меню", reply_markup=mb.main_menu)
+
+    elif message.text == '🔝 Показать статистику':
+        await bot.send_message(message.from_user.id,
+                               f"Ваша статистика за сегодня:\n"
+                               f"{show_day_individual_stats(conn=conn, tg_id=message.from_user.id)}")
 
     else:
         await message.reply("Такой команды не существует. Нажмите /start для отображения меню")
