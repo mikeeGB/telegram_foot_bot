@@ -120,10 +120,10 @@ def show_day_individual_stats(conn, tg_id):
     data = select_day_individual_stats(conn, tg_id)
     if type(data) is tuple:
         message_text = text(bold("Дата:"), f"{data[-1]}",
-                            bold("Игрок:"), escape_md(f"{str(data[0])}"),
-                            bold("Голы:"), f"{str(data[1])}",
-                            bold("Ассисты:"), f"{str(data[2])}",
-                            bold("Игр сыграно:"), f"{str(data[3])}", sep='\n')
+                            bold("Игрок:"), escape_md(f"{data[0]}"),
+                            bold("Голы:"), f"{data[1]}",
+                            bold("Ассисты:"), f"{data[2]}",
+                            bold("Игр сыграно:"), f"{data[3]}", sep='\n')
 
     else:
         message_text = data
@@ -133,7 +133,6 @@ def show_day_individual_stats(conn, tg_id):
 def select_all_time_individual_stats(conn, tg_id):
     select_all_time_ind_stats_query = SELECT_ALL_TIME_INDIVIDUAL_STATS.format(tg_user_id=tg_id)
     all_time_stats_tuple = dbman.execute_read_query(conn, select_all_time_ind_stats_query)
-    print(all_time_stats_tuple)
     if all_time_stats_tuple:
         return all_time_stats_tuple[0]
     return "Еще нет статистики"
@@ -142,8 +141,13 @@ def select_all_time_individual_stats(conn, tg_id):
 def show_all_time_individual_stats(conn, tg_id):
     data = select_all_time_individual_stats(conn, tg_id)
     if type(data) is tuple:
-        text = f"Период: {data[1]} --> {data[2]}\nИгровых дней с результативными действиями: {data[3]}\n" \
-               f"Игрок: {data[0]}\nГолы: {data[4]}\nАссисты: {data[5]}\nИгр сыграно: {data[6]}"
+        message_text = text(bold("Период:"), f"{data[1]} --> {data[2]}",
+                            bold("Игрок:"), escape_md(f"{data[0]}"),
+                            bold("Игровых дней с результативными действиями:"), f"{data[3]}",
+                            bold("Голы:"), f"{data[4]}",
+                            bold("Ассисты:"), f"{data[5]}",
+                            bold("Игр сыграно:"), f"{data[6]}", sep='\n')
+
     else:
-        text = data
-    return text
+        message_text = data
+    return message_text
