@@ -181,7 +181,7 @@ async def echo_message(message: types.Message):
     elif message.text == '🕐 Моя статистика за все время':
         text = f"Ваша статистика за все время:" \
                f"\n{show_all_time_individual_stats(conn=conn, tg_id=message.from_user.id)}"
-        await message.reply(text, reply_markup=mb.sub_menu_stats)
+        await message.reply(text, reply_markup=mb.sub_menu_stats, parse_mode=ParseMode.MARKDOWN)
 
     else:
         await message.reply("Такой команды не существует. Нажмите /start для отображения меню")
