@@ -61,3 +61,23 @@ btn_draw = KeyboardButton('🤝 Ничья')
 sub_menu_winning_defeat_draw = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_winning,
                                                                              btn_defeat).add(
                                                                              btn_draw)
+
+# sub menu statistics
+btn_individual_stats = KeyboardButton('🏋️‍♂ Индивидуальная статистика')
+btn_team_stats = KeyboardButton('🏆 Командная статистика')
+btn_stats_return = KeyboardButton('↩️Вернуться в меню')
+
+
+sub_menu_stats = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_individual_stats).add(
+                                                               btn_team_stats).add(
+                                                               btn_stats_return)
+
+# sub menu individual stats
+btn_individual_stats_today = KeyboardButton('📅 Моя статистика за сегодня')
+btn_individual_stats_all_time = KeyboardButton('🕐 Моя статистика за все время')
+btn_ind_stats_return = KeyboardButton('↩️Меню выбора статистики')
+
+
+sub_menu_individual_stats = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_individual_stats_today).add(
+                                                                          btn_individual_stats_all_time).add(
+                                                                           btn_ind_stats_return)
