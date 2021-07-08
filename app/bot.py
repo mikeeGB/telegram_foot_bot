@@ -16,7 +16,8 @@ from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db,\
                             write_individual_stats_to_match_result_table,\
                             update_stats_games_played,\
                             show_day_individual_stats,\
-                            show_all_time_individual_stats
+                            show_all_time_individual_stats,\
+                            show_average_day_ind_stats
 
 
 logging.basicConfig(level=logging.INFO)
@@ -175,7 +176,10 @@ async def echo_message(message: types.Message):
                                reply_markup=mb.sub_menu_individual_stats)
 
     elif message.text == '📅 Моя статистика за сегодня':
-        text = f"Ваша статистика за сегодня:\n{show_day_individual_stats(conn=conn, tg_id=message.from_user.id)}"
+        text = f"Ваша статистика за сегодня:\n{show_day_individual_stats(conn=conn, tg_id=message.from_user.id)}" \
+               f"\n--------------------------------------\n" \
+               f"Голов и ассистов\nв среднем за игру:\n\n" \
+               f"{show_average_day_ind_stats(conn=conn, tg_id=message.from_user.id)}"
         await message.reply(text, reply_markup=mb.sub_menu_stats, parse_mode=ParseMode.MARKDOWN)
 
     elif message.text == '🕐 Моя статистика за все время':
