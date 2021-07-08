@@ -107,11 +107,15 @@ def update_stats_games_played(conn, tg_id):
 def select_day_individual_stats(conn, tg_id):
     select_day_ind_stats_query = SELECT_DAY_STATS_INDIVIDUAL.format(tg_user_id=tg_id)
     day_stats_tuple = dbman.execute_read_query(conn, select_day_ind_stats_query)
-    day_stats_tuple = day_stats_tuple[0]
-    return day_stats_tuple
+    if day_stats_tuple:
+        return day_stats_tuple[0]
+    return "Нет статистики за сегодня"
 
 
 def show_day_individual_stats(conn, tg_id):
-    res = select_day_individual_stats(conn, tg_id)
-    text = f"Дата: {res[-1]}\nИгрок: {res[0]}\nГолы: {res[1]}\nАссисты: {res[2]}\nИгр сыграно: {res[3]}"
+    data = select_day_individual_stats(conn, tg_id)
+    if type(data) is tuple:
+        text = f"Дата: {data[-1]}\nИгрок: {data[0]}\nГолы: {data[1]}\nАссисты: {data[2]}\nИгр сыграно: {data[3]}"
+    else:
+        text = data
     return text
