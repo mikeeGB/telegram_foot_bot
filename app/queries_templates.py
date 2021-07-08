@@ -53,7 +53,8 @@ SELECT_DAY_STATS_INDIVIDUAL = """SELECT tg_name, goals, assists, games_played, c
                                     FROM stats
                                  WHERE cur_date = CURRENT_DATE AND tg_id = {tg_user_id}"""
 
-SELECT_ALL_TIME_INDIVIDUAL_STATS = """SELECT tg_name, SUM(goals), SUM(assists), SUM(games_played)
+SELECT_ALL_TIME_INDIVIDUAL_STATS = """SELECT tg_name, MIN(cur_date), MAX(cur_date), COUNT(cur_date),
+                                                      SUM(goals), SUM(assists), SUM(games_played)
                                         FROM stats
                                         WHERE tg_id = {tg_user_id}
                                         GROUP BY tg_name"""
