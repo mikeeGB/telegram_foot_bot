@@ -11,7 +11,8 @@ from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS, ADD_GO
                               UPDATE_GAMES_PLAYED_IN_STATS_TABLE,\
                               SELECT_DAY_STATS_INDIVIDUAL,\
                               SELECT_ALL_TIME_INDIVIDUAL_STATS,\
-                              SELECT_AVERAGE_DAY_INDIVIDUAL_STATS
+                              SELECT_AVERAGE_DAY_INDIVIDUAL_STATS,\
+                              SELECT_AVERAGE_ALL_TIME_INDIVIDUAL_STATS
 
 
 def read_tg_id_from_person(conn):
@@ -165,6 +166,27 @@ def select_average_day_ind_stats(conn, tg_id):
 
 def show_average_day_ind_stats(conn, tg_id):
     avg_data = select_average_day_ind_stats(conn, tg_id)
+    if type(avg_data) is tuple:
+        message_text = text(bold("Голов в среднем:"), f"{avg_data[0]}",
+                            bold("Ассистов в среднем:"), f"{avg_data[1]}",
+                            sep='\n')
+
+    else:
+        message_text = avg_data
+    return message_text
+
+
+def select_average_all_time_ind_stats(conn, tg_id):
+    select_all_time_ind_stats_query = SELECT_AVERAGE_ALL_TIME_INDIVIDUAL_STATS.format(tg_user_id=tg_id)
+    avg_all_time_stats_tuple = dbman.execute_read_query(conn, select_all_time_ind_stats_query)
+    print(avg_all_time_stats_tuple)
+    if avg_all_time_stats_tuple:
+        return avg_all_time_stats_tuple[0]
+    return "Еще нет статистики"
+
+
+def show_average_all_time_ind_stats(conn, tg_id):
+    avg_data = select_average_all_time_ind_stats(conn, tg_id)
     if type(avg_data) is tuple:
         message_text = text(bold("Голов в среднем:"), f"{avg_data[0]}",
                             bold("Ассистов в среднем:"), f"{avg_data[1]}",
