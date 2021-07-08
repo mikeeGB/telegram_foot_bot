@@ -4,10 +4,8 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 btn_write_goals = KeyboardButton('⚽ Записать голы')
 btn_write_assists = KeyboardButton('🅰️ Записать ассисты')
 btn_show_stats = KeyboardButton('🔝 Показать статистику')
-btn_end_match_day = KeyboardButton('✅ Завершить игровой день')
 
-main_menu = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_write_goals, btn_write_assists,
-                                                          btn_show_stats, btn_end_match_day)
+main_menu = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_write_goals, btn_write_assists).add(btn_show_stats)
 
 
 # Sub Menu Goals
@@ -28,7 +26,7 @@ btn_continue_writing_goals_1 = KeyboardButton('Записать еще голы'
 btn_continue_writing_assists_1 = KeyboardButton('Записать ассисты')
 
 sub_menu_goals_writing = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_continue_writing_goals_1,
-                                                                       btn_continue_writing_assists_1,
+                                                                       btn_continue_writing_assists_1).add(
                                                                        btn_finish_writing_g)
 
 
@@ -51,7 +49,7 @@ btn_continue_writing_assists_2 = KeyboardButton('Записать еще асс�
 btn_continue_writing_goals_2 = KeyboardButton('Записать голы')
 
 sub_menu_assists_writing = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_continue_writing_assists_2,
-                                                                         btn_continue_writing_goals_2,
+                                                                         btn_continue_writing_goals_2).add(
                                                                          btn_finish_writing_assists)
 
 
@@ -61,5 +59,5 @@ btn_defeat = KeyboardButton('🤬 Поражение')
 btn_draw = KeyboardButton('🤝 Ничья')
 
 sub_menu_winning_defeat_draw = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_winning,
-                                                                             btn_defeat,
+                                                                             btn_defeat).add(
                                                                              btn_draw)
