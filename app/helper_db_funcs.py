@@ -5,7 +5,8 @@ from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS, ADD_GO
                               INITIALIZE_TEAM_STATS_WITH_ZERO, UPDATE_CUR_DATE_TEAM_STATS,\
                               SELECT_DATE_FROM_TEAM_STATS, CHECK_TEAM_STATS_TABLE_EMPTINESS,\
                               INSERT_INTO_MATCH_RESULTS_TABLE,\
-                              UPDATE_GAMES_PLAYED_IN_STATS_TABLE
+                              UPDATE_GAMES_PLAYED_IN_STATS_TABLE,\
+                              SELECT_DAY_STATS_INDIVIDUAL
 
 
 def read_tg_id_from_person(conn):
@@ -101,3 +102,16 @@ def update_stats_games_played(conn, tg_id):
     update_games_played_query = UPDATE_GAMES_PLAYED_IN_STATS_TABLE.format(tg_user_id=tg_id)
     dbman.execute_query(conn, update_games_played_query)
     conn.commit()
+
+
+def select_day_individual_stats(conn, tg_id):
+    select_day_ind_stats_query = SELECT_DAY_STATS_INDIVIDUAL.format(tg_user_id=tg_id)
+    day_stats_tuple = dbman.execute_read_query(conn, select_day_ind_stats_query)
+    day_stats_tuple = day_stats_tuple[0]
+    return day_stats_tuple
+
+
+def show_day_individual_stats(conn, tg_id):
+    res = select_day_individual_stats(conn, tg_id)
+    text = f"Дата: {res[-1]}\nИгрок: {res[0]}\nГолы: {res[1]}\nАссисты: {res[2]}\nИгр сыграно: {res[3]}"
+    return text
