@@ -6,7 +6,8 @@ from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS, ADD_GO
                               SELECT_DATE_FROM_TEAM_STATS, CHECK_TEAM_STATS_TABLE_EMPTINESS,\
                               INSERT_INTO_MATCH_RESULTS_TABLE,\
                               UPDATE_GAMES_PLAYED_IN_STATS_TABLE,\
-                              SELECT_DAY_STATS_INDIVIDUAL
+                              SELECT_DAY_STATS_INDIVIDUAL,\
+                              SELECT_ALL_TIME_INDIVIDUAL_STATS
 
 
 def read_tg_id_from_person(conn):
@@ -106,9 +107,9 @@ def update_stats_games_played(conn, tg_id):
 
 def select_day_individual_stats(conn, tg_id):
     select_day_ind_stats_query = SELECT_DAY_STATS_INDIVIDUAL.format(tg_user_id=tg_id)
-    day_stats_tuple = dbman.execute_read_query(conn, select_day_ind_stats_query)
-    if day_stats_tuple:
-        return day_stats_tuple[0]
+    day_stats__ind_tuple = dbman.execute_read_query(conn, select_day_ind_stats_query)
+    if day_stats__ind_tuple:
+        return day_stats__ind_tuple[0]
     return "Нет статистики за сегодня"
 
 
@@ -116,6 +117,23 @@ def show_day_individual_stats(conn, tg_id):
     data = select_day_individual_stats(conn, tg_id)
     if type(data) is tuple:
         text = f"Дата: {data[-1]}\nИгрок: {data[0]}\nГолы: {data[1]}\nАссисты: {data[2]}\nИгр сыграно: {data[3]}"
+    else:
+        text = data
+    return text
+
+
+def select_all_time_individual_stats(conn, tg_id):
+    select_all_time_ind_stats_query = SELECT_ALL_TIME_INDIVIDUAL_STATS.format(tg_user_id=tg_id)
+    all_time_stats_tuple = dbman.execute_read_query(conn, select_all_time_ind_stats_query)
+    if all_time_stats_tuple:
+        return all_time_stats_tuple[0]
+    return "Еще нет статистики"
+
+
+def show_all_time_individual_stats(conn, tg_id):
+    data = select_all_time_individual_stats(conn, tg_id)
+    if type(data) is tuple:
+        text = f"Игрок {data[0]}\nГолы: {data[1]}\nАссисты: {data[2]}\nИгр сыграно: {data[3]}"
     else:
         text = data
     return text
