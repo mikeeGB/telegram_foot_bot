@@ -2,6 +2,7 @@ import logging
 
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
+from aiogram.types import ParseMode
 from aiogram.utils import executor
 
 import menu_buttons as mb
@@ -175,7 +176,7 @@ async def echo_message(message: types.Message):
 
     elif message.text == '📅 Моя статистика за сегодня':
         text = f"Ваша статистика за сегодня:\n{show_day_individual_stats(conn=conn, tg_id=message.from_user.id)}"
-        await message.reply(text, reply_markup=mb.sub_menu_stats)
+        await message.reply(text, reply_markup=mb.sub_menu_stats, parse_mode=ParseMode.MARKDOWN)
 
     elif message.text == '🕐 Моя статистика за все время':
         text = f"Ваша статистика за все время:" \
