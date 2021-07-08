@@ -63,3 +63,11 @@ SELECT_AVERAGE_DAY_INDIVIDUAL_STATS = """SELECT ROUND((CAST(goals AS numeric) / 
                                                 ROUND((CAST(assists AS numeric) / CAST(games_played AS numeric)), 2)
                                             FROM stats
                                             WHERE tg_id = {tg_user_id} AND cur_date = CURRENT_DATE;"""
+
+SELECT_AVERAGE_ALL_TIME_INDIVIDUAL_STATS = """SELECT ROUND(CAST(SUM(goals) AS numeric) /
+                                                           CAST(SUM(games_played) AS numeric), 2),
+                                                    ROUND(CAST(SUM(assists) AS numeric) /
+                                                           CAST(SUM(games_played) AS numeric), 2)
+                                               FROM stats
+                                               WHERE tg_id = {tg_user_id}
+                                               GROUP by tg_id"""
