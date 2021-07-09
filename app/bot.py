@@ -17,8 +17,6 @@ from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db,\
                             update_stats_games_played,\
                             show_day_individual_stats,\
                             show_all_time_individual_stats,\
-                            show_average_day_ind_stats,\
-                            show_average_all_time_ind_stats,\
                             show_day_team_stats,\
                             show_all_time_team_stats
 
@@ -179,18 +177,12 @@ async def echo_message(message: types.Message):
                                reply_markup=mb.sub_menu_individual_stats)
 
     elif message.text == '📅 Моя статистика за сегодня':
-        text = f"Ваша статистика за сегодня:\n\n{show_day_individual_stats(conn=conn, tg_id=message.from_user.id)}" \
-               f"\n-------------------------------------------------\n" \
-               f"В среднем за матч:\n\n" \
-               f"{show_average_day_ind_stats(conn=conn, tg_id=message.from_user.id)}"
+        text = f"Ваша статистика за сегодня:\n\n{show_day_individual_stats(conn=conn, tg_id=message.from_user.id)}"
         await message.reply(text, reply_markup=mb.sub_menu_stats, parse_mode=ParseMode.MARKDOWN)
 
     elif message.text == '🕐 Моя статистика за все время':
-        text = f"Ваша статистика за все время:\n" \
-               f"\n{show_all_time_individual_stats(conn=conn, tg_id=message.from_user.id)}" \
-               f"\n-------------------------------------------------\n" \
-               f"В среднем за матч:\n\n" \
-               f"{show_average_all_time_ind_stats(conn=conn, tg_id=message.from_user.id)}"
+        text = f"Ваша статистика за все время:\n\n" \
+               f"{show_all_time_individual_stats(conn=conn, tg_id=message.from_user.id)}"
         await message.reply(text, reply_markup=mb.sub_menu_stats, parse_mode=ParseMode.MARKDOWN)
 
     elif message.text == '🏆 Командная статистика':
