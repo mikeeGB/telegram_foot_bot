@@ -12,7 +12,8 @@ from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS, ADD_GO
                               SELECT_DAY_STATS_INDIVIDUAL,\
                               SELECT_ALL_TIME_INDIVIDUAL_STATS,\
                               SELECT_AVERAGE_DAY_INDIVIDUAL_STATS,\
-                              SELECT_AVERAGE_ALL_TIME_INDIVIDUAL_STATS
+                              SELECT_AVERAGE_ALL_TIME_INDIVIDUAL_STATS,\
+                              SELECT_TEAM_STATS_TODAY
 
 
 def read_tg_id_from_person(conn):
@@ -112,9 +113,9 @@ def update_stats_games_played(conn, tg_id):
 
 def select_day_individual_stats(conn, tg_id):
     select_day_ind_stats_query = SELECT_DAY_STATS_INDIVIDUAL.format(tg_user_id=tg_id)
-    day_stats__ind_tuple = dbman.execute_read_query(conn, select_day_ind_stats_query)
-    if day_stats__ind_tuple:
-        return day_stats__ind_tuple[0]
+    day_stats_ind_tuple = dbman.execute_read_query(conn, select_day_ind_stats_query)
+    if day_stats_ind_tuple:
+        return day_stats_ind_tuple[0]
     return "Нет статистики за сегодня"
 
 
@@ -167,8 +168,8 @@ def select_average_day_ind_stats(conn, tg_id):
 def show_average_day_ind_stats(conn, tg_id):
     avg_data = select_average_day_ind_stats(conn, tg_id)
     if type(avg_data) is tuple:
-        message_text = text(bold("Голов в среднем:"), f"{avg_data[0]}",
-                            bold("Ассистов в среднем:"), f"{avg_data[1]}",
+        message_text = text(bold("Голов:"), f"{avg_data[0]}",
+                            bold("Ассистов:"), f"{avg_data[1]}",
                             sep='\n')
 
     else:
@@ -188,10 +189,42 @@ def select_average_all_time_ind_stats(conn, tg_id):
 def show_average_all_time_ind_stats(conn, tg_id):
     avg_data = select_average_all_time_ind_stats(conn, tg_id)
     if type(avg_data) is tuple:
-        message_text = text(bold("Голов в среднем:"), f"{avg_data[0]}",
-                            bold("Ассистов в среднем:"), f"{avg_data[1]}",
+        message_text = text(bold("Голов:"), f"{avg_data[0]}",
+                            bold("Ассистов:"), f"{avg_data[1]}",
                             sep='\n')
 
     else:
         message_text = avg_data
+    return message_text
+
+
+def select_day_team_stats(conn):
+    select_day_team_stats_query = SELECT_TEAM_STATS_TODAY
+    day_stats_team_tuple = dbman.execute_read_query(conn, select_day_team_stats_query)
+    print(day_stats_team_tuple)
+    if day_stats_team_tuple:
+        return day_stats_team_tuple[0]
+    return "Нет статистики за сегодня"
+
+
+def show_day_team_stats(conn):
+    data = select_day_team_stats(conn)
+    if type(data) is tuple:
+        message_text = text(bold("Дата:"), f"{data[0]}",
+                            bold("Голы:"), f"{data[1]}",
+                            bold("Ассисты:"), f"{data[2]}",
+                            bold("Игр сыграно:"), f"{data[3]}",
+                            bold("Победы:"), f"{data[4]}",
+                            bold("Поражения:"), f"{data[5]}",
+                            bold("Ничейные результаты:"), f"{data[6]}",
+                            "\n---------------------------------------------",
+                            "В среднем за матч:\n",
+                            bold("Голов:"), f"{data[7]}",
+                            bold("Ассистов:"), f"{data[8]}",
+                            bold("Побед:"), f"{data[9]}",
+                            bold("Поражений:"), f"{data[10]}",
+                            bold("Ничей:"), f"{data[11]}", sep='\n')
+
+    else:
+        message_text = data
     return message_text
