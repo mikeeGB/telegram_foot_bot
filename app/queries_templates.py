@@ -49,29 +49,19 @@ UPDATE_GAMES_PLAYED_IN_STATS_TABLE = """UPDATE stats
                                         SET games_played = games_played + 1
                                         WHERE tg_id = {tg_user_id} AND cur_date = CURRENT_DATE;"""
 
-SELECT_DAY_STATS_INDIVIDUAL = """SELECT tg_name, goals, assists, games_played, cur_date
+SELECT_DAY_STATS_INDIVIDUAL = """SELECT cur_date, tg_name, games_played, goals, assists,
+                                 ROUND((CAST(goals AS numeric) / CAST(games_played AS numeric)), 2),
+                                 ROUND((CAST(assists AS numeric) / CAST(games_played AS numeric)), 2)
                                     FROM stats
                                  WHERE cur_date = CURRENT_DATE AND tg_id = {tg_user_id};"""
 
-SELECT_ALL_TIME_INDIVIDUAL_STATS = """SELECT tg_name, MIN(cur_date), MAX(cur_date), COUNT(cur_date),
-                                                      SUM(goals), SUM(assists), SUM(games_played)
+SELECT_ALL_TIME_INDIVIDUAL_STATS = """SELECT tg_name, MIN(cur_date), MAX(cur_date), SUM(games_played), COUNT(cur_date),
+                                                      SUM(goals), SUM(assists), 
+                                          ROUND(CAST(SUM(goals) AS numeric) / CAST(SUM(games_played) AS numeric), 2),
+                                          ROUND(CAST(SUM(assists) AS numeric) / CAST(SUM(games_played) AS numeric), 2)         
                                         FROM stats
                                         WHERE tg_id = {tg_user_id}
                                         GROUP BY tg_name;"""
-
-SELECT_AVERAGE_DAY_INDIVIDUAL_STATS = """SELECT ROUND((CAST(goals AS numeric) / CAST(games_played AS numeric)), 2),
-                                                ROUND((CAST(assists AS numeric) / CAST(games_played AS numeric)), 2)
-                                            FROM stats
-                                            WHERE tg_id = {tg_user_id} AND cur_date = CURRENT_DATE;"""
-
-SELECT_AVERAGE_ALL_TIME_INDIVIDUAL_STATS = """SELECT ROUND(CAST(SUM(goals) AS numeric) /
-                                                           CAST(SUM(games_played) AS numeric), 2),
-                                                    ROUND(CAST(SUM(assists) AS numeric) /
-                                                           CAST(SUM(games_played) AS numeric), 2)
-                                               FROM stats
-                                               WHERE tg_id = {tg_user_id}
-                                               GROUP by tg_id"""
-
 
 SELECT_TEAM_STATS_TODAY = """SELECT cur_date, games_played, goals, assists, winnings, defeats, draws,
                                     ROUND((CAST(goals AS numeric) / CAST(games_played AS numeric)), 2),
