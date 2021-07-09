@@ -81,3 +81,13 @@ btn_ind_stats_return = KeyboardButton('↩️Меню выбора статис�
 sub_menu_individual_stats = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_individual_stats_today).add(
                                                                           btn_individual_stats_all_time).add(
                                                                            btn_ind_stats_return)
+
+# sub menu team stats
+btn_team_stats_today = KeyboardButton('🍅 Командная статистика за сегодня')
+btn_team_stats_all_time = KeyboardButton('🥒 Командная статистика за все время')
+btn_team_stats_return = KeyboardButton('↩️Меню выбора статистики')
+
+
+sub_menu_team_stats = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_team_stats_today).add(
+                                                                          btn_team_stats_all_time).add(
+                                                                           btn_team_stats_return)
