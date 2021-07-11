@@ -11,8 +11,10 @@ from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS, ADD_GO
                               UPDATE_GAMES_PLAYED_IN_STATS_TABLE,\
                               SELECT_DAY_STATS_INDIVIDUAL,\
                               SELECT_ALL_TIME_INDIVIDUAL_STATS,\
-                              SELECT_TEAM_STATS_TODAY,\
-                              SELECT_TEAM_STATS_ALL_TIME
+                              SELECT_TEAM_STATS_TODAY_WITH_AVG,\
+                              SELECT_TEAM_STATS_ALL_TIME_WITH_AVG,\
+                              SELECT_GAMES_PLAYED_FROM_TEAM_STATS_ALL_TIME,\
+                              SELECT_GAMES_PLAYED_FROM_TEAM_STATS_TODAY
 
 
 def read_tg_id_from_person(conn):
@@ -163,9 +165,11 @@ def show_all_time_individual_stats(conn, tg_id):
 
 
 def select_day_team_stats(conn):
-    select_day_team_stats_query = SELECT_TEAM_STATS_TODAY
-    day_stats_team_tuple = dbman.execute_read_query(conn, select_day_team_stats_query)
-    if day_stats_team_tuple:
+    select_games_played_query = SELECT_GAMES_PLAYED_FROM_TEAM_STATS_TODAY
+    games_played_tuple = dbman.execute_read_query(conn, select_games_played_query)
+    if games_played_tuple and games_played_tuple[0][0] != 0:
+        select_day_team_stats_query = SELECT_TEAM_STATS_TODAY_WITH_AVG
+        day_stats_team_tuple = dbman.execute_read_query(conn, select_day_team_stats_query)
         return day_stats_team_tuple[0]
     return "Нет статистики за сегодня"
 
@@ -194,9 +198,11 @@ def show_day_team_stats(conn):
 
 
 def select_all_time_team_stats(conn):
-    select_all_time_team_stats_query = SELECT_TEAM_STATS_ALL_TIME
-    all_time_stats_team_tuple = dbman.execute_read_query(conn, select_all_time_team_stats_query)
-    if all_time_stats_team_tuple:
+    select_games_played_query = SELECT_GAMES_PLAYED_FROM_TEAM_STATS_ALL_TIME
+    games_played_tuple = dbman.execute_read_query(conn, select_games_played_query)
+    if games_played_tuple and games_played_tuple[0][0] != 0:
+        select_all_time_team_stats_query = SELECT_TEAM_STATS_ALL_TIME_WITH_AVG
+        all_time_stats_team_tuple = dbman.execute_read_query(conn, select_all_time_team_stats_query)
         return all_time_stats_team_tuple[0]
     return "Нет статистики за сегодня"
 
