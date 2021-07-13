@@ -197,6 +197,20 @@ async def echo_message(message: types.Message):
         text = f"Командная статистика за все время:\n\n{show_all_time_team_stats(conn=conn)}"
         await message.reply(text, reply_markup=mb.sub_menu_stats, parse_mode=ParseMode.MARKDOWN)
 
+    elif message.text == '🥇 Топ лучших игроков':
+        await bot.send_message(message.from_user.id, "Топ игроков", reply_markup=mb.sub_menu_top)
+
+    elif message.text == '🔝 за сегодня':
+        await bot.send_message(message.from_user.id, "Топ за сегодня",
+                               reply_markup=mb.sub_menu_top_players_today_stats)
+
+    elif message.text == '🔝 за все время':
+        await bot.send_message(message.from_user.id, "Топ за все время",
+                               reply_markup=mb.sub_menu_top_players_all_time_stats)
+
+    elif message.text == '↩️Меню командной статистики':
+        await bot.send_message(message.from_user.id, "Командная статистика", reply_markup=mb.sub_menu_team_stats)
+
     else:
         await message.reply("Такой команды не существует. Нажмите /start для отображения меню")
 
