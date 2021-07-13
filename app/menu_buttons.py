@@ -85,9 +85,43 @@ sub_menu_individual_stats = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_in
 # sub menu team stats
 btn_team_stats_today = KeyboardButton('🍅 Командная статистика за сегодня')
 btn_team_stats_all_time = KeyboardButton('🥒 Командная статистика за все время')
+btn_team_stats_top = KeyboardButton('🥇 Топ лучших игроков')
 btn_team_stats_return = KeyboardButton('↩️Меню выбора статистики')
 
 
 sub_menu_team_stats = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_team_stats_today).add(
-                                                                          btn_team_stats_all_time).add(
-                                                                           btn_team_stats_return)
+                                                                    btn_team_stats_all_time).add(
+                                                                    btn_team_stats_top).add(
+                                                                    btn_team_stats_return)
+
+
+# sub menu top players stats
+
+btn_top_players_today = KeyboardButton('🔝 за сегодня')
+btn_top_players_all_time = KeyboardButton('🔝 за все время')
+btn_top_menu_stats_return = KeyboardButton('↩️Меню командной статистики')
+
+sub_menu_top = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_top_players_today, btn_top_players_all_time).add(
+                                                             btn_top_menu_stats_return)
+
+
+btn_stats_top_goalscorers_today = KeyboardButton('🔫 Топ бомбардиров')
+btn_stats_top_assistants_today = KeyboardButton('👠 Топ ассистентов')
+btn_stats_top_g_a_today = KeyboardButton('🔫️👠 Топ гол + пас')
+btn_top_today_stats_return = KeyboardButton('↩️Меню командной статистики')
+
+sub_menu_top_players_today_stats = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_stats_top_goalscorers_today,
+                                                                                 btn_stats_top_assistants_today).add(
+                                                                                 btn_stats_top_g_a_today).add(
+                                                                                 btn_top_today_stats_return)
+
+
+btn_stats_top_goalscorers_all_time = KeyboardButton('💣 Топ бомбардиров')
+btn_stats_top_assistants_all_time = KeyboardButton('🎯 Топ ассистентов')
+btn_stats_top_g_a_today = KeyboardButton('💣🎯 Топ гол + пас')
+btn_top_all_time_stats_return = KeyboardButton('↩️Меню командной статистики')
+
+sub_menu_top_players_all_time_stats = ReplyKeyboardMarkup(resize_keyboard=True).add(btn_stats_top_goalscorers_all_time,
+                                                                                    btn_stats_top_assistants_all_time)\
+                                                                                .add(btn_stats_top_g_a_today).add(
+                                                                                    btn_top_all_time_stats_return)
