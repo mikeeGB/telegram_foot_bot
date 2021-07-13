@@ -19,7 +19,8 @@ from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS, ADD_GO
                               SELECT_TOP_ASSISTANTS_TODAY,\
                               SELECT_TOP_GOAL_PLUS_ASSIST_TODAY,\
                               SELECT_TOP_GOALSCORERS_ALL_TIME,\
-                              SELECT_TOP_ASSISTANTS_ALL_TIME
+                              SELECT_TOP_ASSISTANTS_ALL_TIME,\
+                              SELECT_TOP_GOAL_PLUS_ASSIST_ALL_TIME
 
 
 def read_tg_id_from_person(conn):
@@ -325,6 +326,25 @@ def show_top_assistants_all_time(conn):
         message_text = ""
         for i, data_tuple in enumerate(data):
             message_text += f"{i+1}) {data_tuple[0]} - {data_tuple[1]}x🎯\n"
+    else:
+        message_text = data
+    return message_text
+
+
+def select_top_goal_plus_assist_all_time(conn):
+    select_top_goal_plus_assist_all_time_query = SELECT_TOP_GOAL_PLUS_ASSIST_ALL_TIME
+    top_all_time_goal_plus_assist_data = dbman.execute_read_query(conn, select_top_goal_plus_assist_all_time_query)
+    if top_all_time_goal_plus_assist_data:
+        return top_all_time_goal_plus_assist_data
+    return "Нет статистики за сегодня"
+
+
+def show_top_goal_plus_assist_all_time(conn):
+    data = select_top_goal_plus_assist_all_time(conn)
+    if type(data) is not str:
+        message_text = ""
+        for i, data_tuple in enumerate(data):
+            message_text += f"{i+1}) {data_tuple[0]} - {data_tuple[1]} points\n"
     else:
         message_text = data
     return message_text
