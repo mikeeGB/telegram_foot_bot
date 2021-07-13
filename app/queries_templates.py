@@ -86,3 +86,16 @@ SELECT_GAMES_PLAYED_FROM_TEAM_STATS_TODAY = """SELECT games_played FROM team_sta
                                                     WHERE cur_date = CURRENT_DATE;"""
 
 SELECT_GAMES_PLAYED_FROM_TEAM_STATS_ALL_TIME = """SELECT SUM(games_played) FROM team_stats"""
+
+
+SELECT_TOP_GOALSCORERS_TODAY = """SELECT tg_name, goals FROM stats
+                                      WHERE cur_date = CURRENT_DATE AND goals > 0
+                                  ORDER BY goals DESC;"""
+
+SELECT_TOP_ASSISTANTS_TODAY = """SELECT tg_name, assists FROM stats
+                                      WHERE cur_date = CURRENT_DATE AND assists > 0
+                                  ORDER BY assists DESC;"""
+
+SELECT_TOP_GOAL_PLUS_ASSIST_TODAY = """SELECT tg_name, goals+assists FROM stats
+                                         WHERE cur_date = CURRENT_DATE AND (goals+assists) > 0
+                                         ORDER BY 2 DESC;"""
