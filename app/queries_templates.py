@@ -109,3 +109,8 @@ SELECT_TOP_ASSISTANTS_ALL_TIME = """SELECT tg_name, SUM(assists) FROM stats
                                         WHERE assists > 0
                                      GROUP BY tg_name
                                      ORDER BY 2 DESC;"""
+
+SELECT_TOP_GOAL_PLUS_ASSIST_ALL_TIME = """SELECT tg_name, SUM(goals+assists) FROM stats
+                                            WHERE (goals+assists) > 0
+                                            GROUP BY tg_name
+                                         ORDER BY 2 DESC;"""
