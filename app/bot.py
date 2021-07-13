@@ -21,7 +21,9 @@ from helper_db_funcs import read_tg_id_from_person, write_tg_id_to_db,\
                             show_all_time_team_stats,\
                             show_top_goalscorers_today,\
                             show_top_assistants_today,\
-                            show_top_goal_plus_assist_today
+                            show_top_goal_plus_assist_today,\
+                            show_top_goalscorers_all_time,\
+                            show_top_assistants_all_time
 
 
 logging.basicConfig(level=logging.INFO)
@@ -214,6 +216,7 @@ async def echo_message(message: types.Message):
     elif message.text == '↩️Меню командной статистики':
         await bot.send_message(message.from_user.id, "Командная статистика", reply_markup=mb.sub_menu_team_stats)
 
+    # today top player stats
     elif message.text == '🔫 Топ бомбардиров':
         text = f"Топ бомбардиров за сегодня:\n\n{show_top_goalscorers_today(conn=conn)}"
         await message.reply(text, reply_markup=mb.sub_menu_top_players_today_stats)
@@ -225,6 +228,18 @@ async def echo_message(message: types.Message):
     elif message.text == '🔫️👠 Топ гол + пас':
         text = f"Топ игроков по системе гол+пас за сегодня:\n\n{show_top_goal_plus_assist_today(conn=conn)}"
         await message.reply(text, reply_markup=mb.sub_menu_top_players_today_stats)
+
+    # all time top player stats
+    elif message.text == '💣 Топ бомбардиров':
+        text = f"Топ бомбардиров за все время:\n\n{show_top_goalscorers_all_time(conn=conn)}"
+        await message.reply(text, reply_markup=mb.sub_menu_top_players_all_time_stats)
+
+    elif message.text == '🎯 Топ ассистентов':
+        text = f"Топ ассистентов за все время:\n\n{show_top_assistants_all_time(conn=conn)}"
+        await message.reply(text, reply_markup=mb.sub_menu_top_players_all_time_stats)
+
+
+
 
     else:
         await message.reply("Такой команды не существует. Нажмите /start для отображения меню")
