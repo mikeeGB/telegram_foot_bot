@@ -99,3 +99,13 @@ SELECT_TOP_ASSISTANTS_TODAY = """SELECT tg_name, assists FROM stats
 SELECT_TOP_GOAL_PLUS_ASSIST_TODAY = """SELECT tg_name, goals+assists FROM stats
                                          WHERE cur_date = CURRENT_DATE AND (goals+assists) > 0
                                          ORDER BY 2 DESC;"""
+
+SELECT_TOP_GOALSCORERS_ALL_TIME = """SELECT tg_name, SUM(goals) FROM stats
+                                        WHERE goals > 0
+                                     GROUP BY tg_name
+                                     ORDER BY 2 DESC;"""
+
+SELECT_TOP_ASSISTANTS_ALL_TIME = """SELECT tg_name, SUM(assists) FROM stats
+                                        WHERE assists > 0
+                                     GROUP BY tg_name
+                                     ORDER BY 2 DESC;"""
