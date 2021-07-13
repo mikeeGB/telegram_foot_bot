@@ -14,7 +14,10 @@ from queries_templates import ADDING_PLAYER_Q, SELECT_TG_ID_FROM_PERSONS, ADD_GO
                               SELECT_TEAM_STATS_TODAY_WITH_AVG,\
                               SELECT_TEAM_STATS_ALL_TIME_WITH_AVG,\
                               SELECT_GAMES_PLAYED_FROM_TEAM_STATS_ALL_TIME,\
-                              SELECT_GAMES_PLAYED_FROM_TEAM_STATS_TODAY
+                              SELECT_GAMES_PLAYED_FROM_TEAM_STATS_TODAY,\
+                              SELECT_TOP_GOALSCORERS_TODAY,\
+                              SELECT_TOP_ASSISTANTS_TODAY,\
+                              SELECT_TOP_GOAL_PLUS_ASSIST_TODAY
 
 
 def read_tg_id_from_person(conn):
@@ -225,6 +228,63 @@ def show_all_time_team_stats(conn):
                             bold("Поражений:"), f"{data[11]}",
                             bold("Ничей:"), f"{data[12]}", sep='\n')
 
+    else:
+        message_text = data
+    return message_text
+
+
+def select_top_goalscorers_today(conn):
+    select_top_goalscorers_today_query = SELECT_TOP_GOALSCORERS_TODAY
+    top_today_goalscorers_data = dbman.execute_read_query(conn, select_top_goalscorers_today_query)
+    if top_today_goalscorers_data:
+        return top_today_goalscorers_data
+    return "Нет статистики за сегодня"
+
+
+def show_top_goalscorers_today(conn):
+    data = select_top_goalscorers_today(conn)
+    if type(data) is not str:
+        message_text = f"Дата: {datetime.date.today()}\n"
+        for i, data_tuple in enumerate(data):
+            message_text += f"{i+1}) {data_tuple[0]} - {data_tuple[1]}x⚽"
+    else:
+        message_text = data
+    return message_text
+
+
+def select_top_assistants_today(conn):
+    select_top_assistants_today_query = SELECT_TOP_ASSISTANTS_TODAY
+    top_today_assistants_data = dbman.execute_read_query(conn, select_top_assistants_today_query)
+    if top_today_assistants_data:
+        return top_today_assistants_data
+    return "Нет статистики за сегодня"
+
+
+def show_top_assistants_today(conn):
+    data = select_top_assistants_today(conn)
+    if type(data) is not str:
+        message_text = f"Дата: {datetime.date.today()}\n"
+        for i, data_tuple in enumerate(data):
+            message_text += f"{i+1}) {data_tuple[0]} - {data_tuple[1]}x🎯"
+    else:
+        message_text = data
+    return message_text
+
+
+def select_top_goal_plus_assist_today(conn):
+    select_top_goal_plus_assist_today_query = SELECT_TOP_GOAL_PLUS_ASSIST_TODAY
+    top_today_goal_plus_assist_data = dbman.execute_read_query(conn, select_top_goal_plus_assist_today_query)
+    if top_today_goal_plus_assist_data:
+        return top_today_goal_plus_assist_data
+    return "Нет статистики за сегодня"
+
+
+def show_top_goal_plus_assist_today(conn):
+    data = select_top_goal_plus_assist_today(conn)
+    if type(data) is not str:
+        message_text = f"Дата: {datetime.date.today()}\n"
+        for i, data_tuple in enumerate(data):
+            message_text += f"{i+1}) {data_tuple[0]} - {data_tuple[1]} points"
     else:
         message_text = data
     return message_text
